@@ -30,8 +30,6 @@ const CloseIcon = () => (
 const navLinks = [
   { to: '/dashboard', label: 'Dashboard' },
   { to: '/interview/setup', label: 'Practice' },
-  { to: '/history', label: 'History' },
-  { to: '/profile', label: 'Profile' },
 ];
 
 export default function Navbar() {
