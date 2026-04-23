@@ -7,8 +7,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center gap-2.5 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center">
-                <span className="text-white text-sm font-bold">P</span>
+              <div className="w-8 h-8 flex items-center justify-center text-xl">
+                🎯
               </div>
               <span className="text-xl font-bold text-white">
                 Prep<span className="gradient-text">AI</span>

@@ -46,8 +46,8 @@ export default function Login() {
         </div>
         <div className="relative z-10 text-center max-w-sm">
           <Link to="/" className="inline-flex items-center gap-2.5 mb-10">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center shadow-lg">
-              <span className="text-white font-black text-lg">P</span>
+            <div className="w-10 h-10 flex items-center justify-center text-2xl">
+              🎯
             </div>
             <span className="text-2xl font-black text-white">PrepAI</span>
           </Link>
