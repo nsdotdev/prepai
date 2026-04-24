@@ -4,6 +4,7 @@ import { interviewAPI } from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { Spinner } from '../components/LoadingSpinner';
 import ScoreRing from '../components/ScoreRing';
+import demoAnswers from '../data/demoAnswers';
 
 export default function InterviewSession() {
   const { state } = useLocation();
@@ -16,9 +17,12 @@ export default function InterviewSession() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answer, setAnswer] = useState('');
+  const [isDemoAnswer, setIsDemoAnswer] = useState(false);
   const [evaluating, setEvaluating] = useState(false);
   const [currentFeedback, setCurrentFeedback] = useState(null);
   const [results, setResults] = useState([]);
+
+  const demoEntry = demoAnswers?.[role]?.[difficulty]?.[currentIndex];
 
   useEffect(() => {
     if (!questions.length) {
@@ -29,11 +33,27 @@ export default function InterviewSession() {
   const wordCount = answer.trim().split(/\s+/).filter(Boolean).length;
   const progress = ((currentIndex) / questions.length) * 100;
 
+  const handleFillDemo = () => {
+    if (!demoEntry) return;
+    setAnswer(demoEntry.answer);
+    setIsDemoAnswer(true);
+  };
+
   const handleSubmitAnswer = async () => {
     if (!answer.trim()) {
       addToast('Please write an answer before submitting', 'warning');
       return;
     }
+
+    // Use pre-bundled evaluation for demo answers — bypasses mock scorer
+    if (isDemoAnswer && demoEntry) {
+      setEvaluating(true);
+      await new Promise((r) => setTimeout(r, 900)); // brief realistic delay
+      setCurrentFeedback(demoEntry.evaluation);
+      setEvaluating(false);
+      return;
+    }
+
     setEvaluating(true);
     try {
       const { data } = await interviewAPI.evaluateAnswer({
@@ -76,6 +96,7 @@ export default function InterviewSession() {
       setCurrentIndex((i) => i + 1);
       setAnswer('');
       setCurrentFeedback(null);
+      setIsDemoAnswer(false);
     }
   };
 
@@ -178,10 +199,26 @@ export default function InterviewSession() {
             {/* Answer textarea */}
             {!currentFeedback ? (
               <div className="card p-5">
-                <label className="label">Your Answer</label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="label mb-0">Your Answer</label>
+                  {demoEntry && (
+                    <button
+                      type="button"
+                      onClick={handleFillDemo}
+                      disabled={evaluating}
+                      className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-700 hover:bg-amber-100 dark:hover:bg-amber-900/30 transition-colors disabled:opacity-40"
+                    >
+                      <span>🎯</span>
+                      Fill demo answer
+                    </button>
+                  )}
+                </div>
                 <textarea
                   value={answer}
-                  onChange={(e) => setAnswer(e.target.value)}
+                  onChange={(e) => {
+                    setAnswer(e.target.value);
+                    if (isDemoAnswer) setIsDemoAnswer(false);
+                  }}
                   rows={8}
                   className="input resize-none font-mono text-sm leading-relaxed"
                   placeholder="Type your answer here. Be as detailed as possible — explain your thought process, give examples, and discuss trade-offs..."
