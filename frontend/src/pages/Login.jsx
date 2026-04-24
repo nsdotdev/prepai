@@ -100,6 +100,22 @@ export default function Login() {
             <p className="text-slate-500 dark:text-slate-400">Sign in to continue your practice</p>
           </div>
 
+          {/* Demo credentials banner */}
+          <button
+            type="button"
+            onClick={() => setForm({ email: 'demo@prep.ai', password: 'demo1234' })}
+            className="w-full mb-5 flex items-center gap-3 px-4 py-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/30 transition-colors group text-left"
+          >
+            <span className="text-xl flex-shrink-0">🎯</span>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-semibold text-amber-800 dark:text-amber-400">Try Demo Account</p>
+              <p className="text-xs text-amber-600 dark:text-amber-500 truncate">demo@prep.ai · demo1234</p>
+            </div>
+            <span className="text-xs font-semibold text-amber-700 dark:text-amber-400 flex-shrink-0 group-hover:underline">
+              Fill in →
+            </span>
+          </button>
+
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="label">Email address</label>
