@@ -128,17 +128,21 @@ export default function History() {
           <CardSkeleton count={4} />
         ) : filtered.length === 0 ? (
           <div className="card p-16 text-center">
-            <div className="text-6xl mb-5">{totalSessions === 0 ? '📋' : '🔍'}</div>
+            <div className="text-6xl mb-5">{totalSessions === 0 ? '🚀' : '🔍'}</div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
-              {totalSessions === 0 ? 'No sessions yet' : 'No sessions match this filter'}
+              {totalSessions === 0 ? 'No interviews yet' : 'No sessions match this filter'}
             </h3>
-            <p className="text-slate-500 dark:text-slate-400 mb-6">
+            <p className="text-slate-500 dark:text-slate-400 mb-2">
               {totalSessions === 0
-                ? 'Complete your first interview session to see your history here.'
-                : 'Try a different filter or start a new session.'}
+                ? 'Complete your first practice session and your results will appear here.'
+                : 'Try a different filter or kick off a new session.'}
             </p>
+            {totalSessions === 0 && (
+              <p className="text-xs text-slate-400 dark:text-slate-500 mb-6">Takes about 10 minutes · 5 questions per session</p>
+            )}
+            {totalSessions !== 0 && <div className="mb-6" />}
             <Link to="/interview/setup" className="btn-primary">
-              Start Your First Interview
+              {totalSessions === 0 ? 'Start First Interview' : 'New Session'}
             </Link>
           </div>
         ) : (
